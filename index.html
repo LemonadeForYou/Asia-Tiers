@@ -19,7 +19,6 @@
       position: relative;
     }
 
-    /* ---------- ANIMATED BACKGROUND (Particles & Stars) ---------- */
     #bg-canvas {
       position: fixed;
       top: 0;
@@ -42,7 +41,6 @@
       z-index: -1;
     }
 
-    /* main container */
     .main-wrapper {
       max-width: 1400px;
       margin: 0 auto;
@@ -51,7 +49,6 @@
       z-index: 2;
     }
 
-    /* Squircle helper: border-radius with smooth 30px-24px mix */
     .squircle {
       border-radius: 28px;
     }
@@ -60,7 +57,6 @@
       border-radius: 20px;
     }
 
-    /* Navbar - squircle glass */
     .navbar {
       position: sticky;
       top: 16px;
@@ -144,7 +140,6 @@
       transform: scale(0.98);
     }
 
-    /* ----- PODIUM SECTION (squircle cards) ----- */
     .podium-section {
       margin: 2rem 0 2.5rem;
       display: flex;
@@ -229,7 +224,6 @@
       font-size: 0.8rem;
     }
 
-    /* leaderboard container squircle */
     .leaderboard-container {
       background: rgba(8, 8, 20, 0.55);
       backdrop-filter: blur(20px);
@@ -251,7 +245,6 @@
       letter-spacing: 0.5px;
     }
 
-    /* player rows squircle */
     .player-row {
       display: grid;
       grid-template-columns: 80px 90px 1fr 120px;
@@ -274,7 +267,6 @@
       box-shadow: 0 12px 22px -10px rgba(0, 0, 0, 0.6);
     }
 
-    /* top row glows */
     .player-row.top-1 {
       background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(100, 70, 20, 0.4));
       border: 1px solid rgba(212, 175, 55, 0.7);
@@ -349,7 +341,6 @@
       color: #ccd;
     }
 
-    /* responsive */
     @media (max-width: 800px) {
       .leaderboard-header { display: none; }
       .player-row { grid-template-columns: 1fr; gap: 0.6rem; text-align: center; padding: 1rem; }
@@ -412,10 +403,8 @@
     </div>
   </div>
 
-  <!-- PODIUM SECTION (Top 3) -->
   <div class="podium-section" id="podiumArea"></div>
 
-  <!-- LEADERBOARD TABLE -->
   <div class="leaderboard-container">
     <div class="leaderboard-header">
       <div>RANK</div>
@@ -429,20 +418,19 @@
 </div>
 
 <script>
-  // ----------------------------- PLAYER DATA (30+ players) -----------------------------
+  function getAvatarUrl(username) {
+    return `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(username)}&backgroundColor=2c2c3a&radius=50&fontSize=36&fontWeight=600&colors=gold,orange,purple`;
+  }
+
   const namePool = [
     "CreqmXD", "FrostBlade", "ShadowReap", "VoidWalker", "StormSage", "RavenLock", "ZenithX", "MirageOP",
     "PhantomKite", "EmberFury", "TitanSlayer", "NovaRift", "Zephyr_", "LunarHaze", "AshenOne", "DuskBringer",
     "Sylphie", "Kurogane", "YukiDesu", "Raijin_", "SenpaiPvP", "Rekkles", "FakerLite", "ScoutZero", "Matsuri",
     "OrochiX", "Tempest", "KarmaVortex"
   ];
-  
-  function getAvatarUrl(username) {
-    return `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(username)}&backgroundColor=2c2c3a&radius=50&fontSize=36&fontWeight=600&colors=gold,orange,purple`;
-  }
-
+</script>
+<script>
   let players = [];
-  // generate 32 players with realistic tier distribution
   for (let i = 1; i <= 32; i++) {
     let username;
     if (i <= namePool.length) username = namePool[i-1];
@@ -466,14 +454,12 @@
       avatarUrl: getAvatarUrl(username)
     });
   }
-  // final manual adjustments
   players.push({ rank: 33, username: "GodlyRift", tier: "S+", avatarUrl: getAvatarUrl("GodlyRift") });
   players.push({ rank: 34, username: "OmegaFlash", tier: "S", avatarUrl: getAvatarUrl("OmegaFlash") });
   players.push({ rank: 35, username: "CrimsonFang", tier: "A", avatarUrl: getAvatarUrl("CrimsonFang") });
   players.sort((a,b) => a.rank - b.rank);
   players.forEach((p, idx) => { p.rank = idx + 1; });
   
-  // global variables
   let currentSearch = '';
   let currentTier = 'all';
   let currentSort = 'asc';
@@ -494,7 +480,15 @@
     }
   }
   
-  // Render Podium (Top 3)
+  function escapeHtml(str) {
+    return str.replace(/[&<>]/g, function(m) {
+      if(m === '&') return '&amp;';
+      if(m === '<') return '&lt;';
+      if(m === '>') return '&gt;';
+      return m;
+    });
+  }
+  
   function renderPodium() {
     const top3 = players.slice(0,3);
     if (top3.length === 0) return;
@@ -523,15 +517,6 @@
     podiumArea.innerHTML = podiumHTML;
   }
   
-  function escapeHtml(str) {
-    return str.replace(/[&<>]/g, function(m) {
-      if(m === '&') return '&amp;';
-      if(m === '<') return '&lt;';
-      if(m === '>') return '&gt;';
-      return m;
-    });
-  }
-  
   function renderLeaderboard() {
     let filtered = [...players];
     if (currentSearch.trim() !== "") {
@@ -541,7 +526,6 @@
     if (currentTier !== 'all') {
       filtered = filtered.filter(p => p.tier === currentTier);
     }
-    // sort by rank ascending always (requirement)
     filtered.sort((a,b) => a.rank - b.rank);
     
     if (filtered.length === 0) {
@@ -575,17 +559,14 @@
     renderLeaderboard();
   }
   
-  // Event listeners
   searchInput.addEventListener('input', (e) => { currentSearch = e.target.value; updateAll(); });
   tierFilter.addEventListener('change', (e) => { currentTier = e.target.value; updateAll(); });
-  sortBtn.addEventListener('click', () => { 
-    // simply enforce rank sort (ascending)
+  sortBtn.addEventListener('click', () => {
     updateAll();
     sortBtn.style.transform = "scale(0.96)";
     setTimeout(() => sortBtn.style.transform = "", 150);
   });
   
-  // ---------- ANIMATED BACKGROUND (canvas particles & stars) ----------
   const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
   let width, height;
@@ -654,22 +635,38 @@
   function animateBackground() {
     if (!ctx) return;
     ctx.clearRect(0, 0, width, height);
-    // deep dark gradient
     const grad = ctx.createLinearGradient(0, 0, width*0.8, height);
     grad.addColorStop(0, '#03030c');
     grad.addColorStop(1, '#0a0a1a');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, width, height);
-    // draw stars
     for (let s of stars) {
       s.draw(animationTime);
     }
-    // draw particles (glowing dots)
     for (let p of particles) {
       p.update();
       p.draw();
     }
-    // additional floating orbs
-    ctx.shadowBlur = 0;
     animationTime += 16;
-    requestAnimationFrame(anima
+    requestAnimationFrame(animateBackground);
+  }
+  
+  window.addEventListener('resize', () => {
+    resizeCanvas();
+    initBackground();
+  });
+  
+  initBackground();
+  animateBackground();
+  updateAll();
+  
+  setTimeout(() => {
+    const cards = document.querySelectorAll('.podium-card');
+    cards.forEach((card, idx) => {
+      card.style.animation = `fadeSlide 0.5s ease forwards ${idx * 0.1}s`;
+      card.style.opacity = "0";
+    });
+  }, 100);
+</script>
+</body>
+</html>
