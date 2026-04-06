@@ -1,219 +1,559 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eclipse Tiers</title>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-    font-family:'Press Start 2P',Arial,sans-serif;
-    background:linear-gradient(135deg,#000 0%,#1a0033 100%);
-    color:#e0e0e0;
-    overflow-x:hidden;
-    position:relative;
-}
-body::before {
-    content:''; position:fixed; top:0; left:0; width:100%; height:100%;
-    background:radial-gradient(circle at 50% 20%, rgba(138,43,226,0.3) 0%, transparent 70%);
-    pointer-events:none; z-index:-1;
-}
-body::after {
-    content:''; position:fixed; top:0; left:0; width:100%; height:100%;
-    background:radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.8) 100%);
-    pointer-events:none; z-index:-1;
-}
-.eclipse-glow { animation:eclipsePulse 3s infinite ease-in-out; }
-@keyframes eclipsePulse {
-    0%,100%{box-shadow:0 0 30px rgba(138,43,226,0.5),0 0 60px rgba(255,165,0,0.2);}
-    50%{box-shadow:0 0 50px rgba(138,43,226,0.8),0 0 100px rgba(255,165,0,0.4);}
-}
-.fade-in { animation:fadeIn 1s ease-in; }
-@keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-header {position:fixed; top:0; width:100%; background:rgba(0,0,0,0.9); padding:20px; z-index:1000; text-align:center; border-bottom:1px solid rgba(138,43,226,0.3);}
-.title { font-size:2.5rem; color:#8a2be2; text-shadow:0 0 20px rgba(138,43,226,0.8),0 0 40px rgba(255,165,0,0.2); margin-bottom:10px; }
-nav { display:flex; justify-content:center; align-items:center; gap:20px; flex-wrap:wrap; }
-nav a { color:#e0e0e0; text-decoration:none; padding:10px 15px; border-radius:5px; transition:all 0.3s ease; }
-nav a:hover { background: rgba(138,43,226,0.2); color:#8a2be2; }
-.discord-btn { background:linear-gradient(45deg,#8a2be2,#4b0082); color:white; padding:10px 20px; border-radius:5px; display:flex; align-items:center; gap:5px; box-shadow:0 0 10px rgba(138,43,226,0.5); transition:all 0.3s ease; }
-.discord-btn:hover { box-shadow:0 0 20px rgba(138,43,226,0.8); }
-.section-title { text-align:center; font-size:2rem; color:#8a2be2; text-shadow:0 0 15px rgba(138,43,226,0.6); padding:40px 20px; margin-top:100px; }
-.gamemode-selector { display:flex; justify-content:center; gap:15px; padding:20px; background: rgba(26,26,26,0.9); border-radius:15px; margin:20px auto; max-width:950px; box-shadow:0 0 20px rgba(138,43,226,0.2); flex-wrap:wrap;}
-.gamemode-btn { display:flex; justify-content:center; align-items:center; padding:10px 15px; border-radius:10px; background:#333; border:2px solid transparent; transition:all 0.3s ease; cursor:pointer; filter: brightness(0.8); font-size:0.7rem; color:#e0e0e0; text-align:center;}
-.gamemode-btn.active { background: rgba(138,43,226,0.2); border-color:#8a2be2; box-shadow:0 0 15px rgba(138,43,226,0.8); filter:none; }
-.gamemode-btn:hover { filter:none; box-shadow:0 0 10px rgba(138,43,226,0.5); }
-.player-list { padding:20px; text-align:center; color:#e0e0e0; }
-.ranking-table { margin:30px auto; max-width:900px; border-collapse:collapse; width:90%; }
-.ranking-table th, .ranking-table td { border:2px solid #8a2be2; padding:10px; text-align:center; }
-.ranking-table th { background:#2a0055; color:#fff; }
-.ranking-table td { background:#1a001f; color:#e0e0e0; }
-button { padding:5px 10px; background:#8a2be2; color:#fff; border:none; border-radius:5px; cursor:pointer; }
-button:hover { background:#6a1fb8; }
-.modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); display:flex; justify-content:center; align-items:center; z-index:2000; display:none; }
-.modal-content { background:#1a001f; padding:20px; border-radius:10px; max-width:400px; width:90%; text-align:center; }
-.modal input { padding:10px; margin:10px 0; width:80%; border-radius:5px; border:none; }
-@media(max-width:768px){ .title{font-size:2rem;} .gamemode-selector{flex-wrap:wrap;gap:10px;} .ranking-table th,.ranking-table td{font-size:0.6rem; padding:8px;} }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Asia Tiers | Competitive PvP Rankings</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Poppins', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 10% 20%, #0a0a1a, #03030c);
+      background-attachment: fixed;
+      padding: 0 1rem 3rem;
+      color: #f0f0f8;
+    }
+
+    /* Glassmorphism background effect */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(3px);
+      background: rgba(5, 5, 20, 0.25);
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    /* Smooth scroll */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* sticky navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 25, 0.75);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      padding: 1rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand h1 {
+      font-size: 1.9rem;
+      background: linear-gradient(135deg, #f5e7a3, #d4af37, #b8860b);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: 1px;
+      text-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+    }
+
+    .sub {
+      font-size: 0.8rem;
+      color: #a9a9c0;
+      letter-spacing: 0.5px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-box {
+      background: rgba(20, 20, 40, 0.7);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 40px;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .search-box input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-size: 0.9rem;
+      width: 180px;
+    }
+
+    .search-box input::placeholder {
+      color: #b0b0d0;
+    }
+
+    .search-box i {
+      color: #d4af37;
+    }
+
+    select {
+      background: rgba(20, 20, 40, 0.8);
+      border: 1px solid rgba(212, 175, 55, 0.5);
+      border-radius: 40px;
+      padding: 0.5rem 1.2rem;
+      color: white;
+      font-weight: 500;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+      font-size: 0.85rem;
+    }
+
+    /* leaderboard container */
+    .leaderboard-container {
+      max-width: 1300px;
+      margin: 2rem auto;
+      background: rgba(8, 8, 20, 0.45);
+      backdrop-filter: blur(12px);
+      border-radius: 2rem;
+      padding: 1.5rem 1rem;
+      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    /* header columns (desktop) */
+    .leaderboard-header {
+      display: grid;
+      grid-template-columns: 80px 90px 1fr 120px;
+      padding: 0.8rem 1rem;
+      margin-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+      font-weight: 600;
+      color: #cdcdff;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+    }
+
+    /* cards / rows */
+    .player-row {
+      display: grid;
+      grid-template-columns: 80px 90px 1fr 120px;
+      align-items: center;
+      background: rgba(18, 18, 35, 0.6);
+      margin: 0.7rem 0;
+      padding: 0.7rem 1rem;
+      border-radius: 1.2rem;
+      transition: all 0.25s ease-in-out;
+      border: 1px solid transparent;
+      backdrop-filter: blur(4px);
+      animation: fadeSlideUp 0.4s ease forwards;
+      opacity: 0;
+    }
+
+    .player-row:hover {
+      transform: translateY(-3px) scale(1.01);
+      background: rgba(30, 30, 55, 0.8);
+      border-color: rgba(212, 175, 55, 0.5);
+      box-shadow: 0 12px 20px -12px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Top 3 special styling */
+    .player-row.top-1 {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(100, 70, 20, 0.4));
+      border: 1px solid rgba(212, 175, 55, 0.7);
+      box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+      transform: scale(1.01);
+    }
+    .player-row.top-2 {
+      background: linear-gradient(135deg, rgba(180, 150, 70, 0.15), rgba(80, 60, 25, 0.3));
+      border: 1px solid rgba(200, 170, 80, 0.5);
+    }
+    .player-row.top-3 {
+      background: linear-gradient(135deg, rgba(150, 120, 50, 0.12), rgba(70, 50, 20, 0.25));
+      border: 1px solid rgba(180, 150, 60, 0.4);
+    }
+
+    @keyframes fadeSlideUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* rank styling */
+    .rank-number {
+      font-size: 1.7rem;
+      font-weight: 800;
+      text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+      letter-spacing: -1px;
+    }
+    .rank-number.glowing {
+      background: linear-gradient(135deg, #ffd966, #e6b422);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 10px rgba(230, 180, 34, 0.6);
+    }
+
+    /* avatar */
+    .avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(212, 175, 55, 0.6);
+      background: #1e1e2a;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s;
+    }
+    .player-row:hover .avatar {
+      transform: scale(1.05);
+    }
+
+    .username {
+      font-weight: 600;
+      font-size: 1.1rem;
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* tier badges */
+    .tier-badge {
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      border-radius: 40px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      text-align: center;
+      min-width: 70px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      transition: all 0.2s;
+    }
+
+    .tier-Splus { background: linear-gradient(135deg, #f5b042, #d4af37); color: #1e1a0c; box-shadow: 0 0 12px #f5b042; text-shadow: none; font-weight: 800; border: 1px solid #ffdf8c; }
+    .tier-S { background: linear-gradient(135deg, #f39c12, #e67e22); color: #2c1a0a; box-shadow: 0 2px 8px rgba(243, 156, 18, 0.6); font-weight: 800; }
+    .tier-A { background: #2e7d32; color: #e8f5e9; box-shadow: 0 2px 8px #2e7d3280; border: 1px solid #66bb6a; }
+    .tier-B { background: #1565c0; color: #e3f2fd; box-shadow: 0 2px 8px #1565c080; border: 1px solid #42a5f5; }
+    .tier-C { background: #5d5d6e; color: #f0f0f0; box-shadow: 0 2px 6px #3a3a4e; border: 1px solid #9090aa; }
+
+    /* empty state */
+    .no-results {
+      text-align: center;
+      padding: 3rem;
+      color: #ccd;
+      font-size: 1.2rem;
+    }
+
+    /* responsive */
+    @media (max-width: 780px) {
+      .leaderboard-header {
+        display: none;
+      }
+      .player-row {
+        grid-template-columns: 1fr;
+        gap: 0.7rem;
+        text-align: center;
+        padding: 1rem;
+      }
+      .rank-number, .avatar, .username, .tier-badge {
+        justify-self: center;
+        margin: 0 auto;
+      }
+      .rank-number {
+        font-size: 1.6rem;
+      }
+      .username {
+        justify-content: center;
+      }
+      .navbar {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+      }
+      .controls {
+        justify-content: center;
+      }
+      .search-box input {
+        width: 140px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .leaderboard-container {
+        padding: 1rem 0.8rem;
+      }
+      .tier-badge {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.8rem;
+      }
+      .brand h1 {
+        font-size: 1.5rem;
+      }
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.75rem;
+      color: #8a8aac;
+    }
+    i, .icon {
+      font-style: normal;
+      font-weight: normal;
+    }
+    .fa, .fas {
+      font-family: 'Segoe UI', system-ui;
+    }
+  </style>
 </head>
 <body>
 
-<header>
-<div class="title eclipse-glow">Eclipse Tiers</div>
-<nav>
-<a href="#home">Home</a>
-<a href="#tierlists">Tierlists</a>
-<a href="#rules">Rules</a>
-<a href="#testers">Testers</a>
-<a href="#" class="discord-btn" id="adminLoginBtn">Admin Login</a>
-</nav>
-</header>
-
-<section id="tierlists">
-<div class="section-title fade-in">Tierlists</div>
-
-<div class="gamemode-selector fade-in">
-<div class="gamemode-btn active" data-mode="npot">NPot</div>
-<div class="gamemode-btn" data-mode="sword">Sword</div>
-<div class="gamemode-btn" data-mode="crystal">Crystal</div>
-<div class="gamemode-btn" data-mode="smp">SMP</div>
-<div class="gamemode-btn" data-mode="uhcpot">UHC Pot</div>
-<div class="gamemode-btn" data-mode="mace">Mace</div>
-<div class="gamemode-btn" data-mode="axe">Axe</div>
+<div class="navbar">
+  <div class="brand">
+    <h1>⚔️ ASIA TIERS</h1>
+    <div class="sub">Competitive PvP Rankings</div>
+  </div>
+  <div class="controls">
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="text" id="searchInput" placeholder="Search username...">
+    </div>
+    <select id="tierFilter">
+      <option value="all">All Tiers</option>
+      <option value="S+">S+</option>
+      <option value="S">S</option>
+      <option value="A">A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+    </select>
+    <button id="sortRankBtn" style="background: rgba(212,175,55,0.2); border:1px solid #d4af37; border-radius:40px; padding:0.5rem 1rem; color:white; font-weight:bold; cursor:pointer; backdrop-filter:blur(4px);">⬇️ Sort by Rank</button>
+  </div>
 </div>
 
-<table class="ranking-table fade-in" id="rankingTable">
-<tr>
-<th>No.</th>
-<th>Player</th>
-<th>NPot</th>
-<th>Sword</th>
-<th>Crystal</th>
-<th>SMP</th>
-<th>Mace</th>
-</tr>
-</table>
-</section>
-
-<!-- Admin Modal -->
-<div class="modal" id="adminModal">
-<div class="modal-content" id="loginContent">
-<h2>Admin Login</h2>
-<input type="email" placeholder="Email" id="adminEmail">
-<input type="password" placeholder="Password" id="adminPass">
-<button onclick="adminLogin()">Login</button>
+<div class="leaderboard-container" id="leaderboardContainer">
+  <div class="leaderboard-header">
+    <div>RANK</div>
+    <div>AVATAR</div>
+    <div>USERNAME</div>
+    <div>TIER</div>
+  </div>
+  <div id="playersList"></div>
 </div>
-
-<div class="modal-content" id="addPlayerContent" style="display:none;">
-<h2>Add Player</h2>
-<input type="text" placeholder="Player Name" id="playerName">
-<input type="text" placeholder="NPot" id="playerNpot">
-<input type="text" placeholder="Sword" id="playerSword">
-<input type="text" placeholder="Crystal" id="playerCrystal">
-<input type="text" placeholder="SMP" id="playerSmp">
-<input type="text" placeholder="Mace" id="playerMace">
-<button onclick="addPlayer()">Add Player</button>
-<button onclick="closeModal()">Close</button>
-</div>
-</div>
-
-<!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<footer>© Asia Tiers — elite PvP leaderboard | real-time ready</footer>
 
 <script>
-// Firebase config (replace with your own)
-const firebaseConfig = {
-  apiKey: "AIzaSyA-RyZJfXYgwYwMqljFK7hvSiemMEYFyPE",
-  authDomain: "minecraft-tierlist-website.firebaseapp.com",
-  projectId: "minecraft-tierlist-website",
-  storageBucket: "minecraft-tierlist-website.appspot.com",
-  messagingSenderId: "739662401599",
-  appId: "1:739662401599:web:eeb9ed15ed7a9f4ddfa88a",
-  measurementId: "G-K4H3R33YN6"
-};
+  // ---------- GENERATE 20+ SAMPLE PLAYERS ----------
+  const tierList = ['S+', 'S', 'A', 'B', 'C'];
+  // usernames pool for variety
+  const namePool = [
+    "CreqmXD", "FrostBlade", "ShadowReap", "VoidWalker", "StormSage", "RavenLock", "ZenithX", "MirageOP",
+    "PhantomKite", "EmberFury", "TitanSlayer", "NovaRift", "Zephyr_", "LunarHaze", "AshenOne", "DuskBringer",
+    "Sylphie", "Kurogane", "YukiDesu", "Raijin_", "SenpaiPvP", "Rekkles", "FakerLite", "ScoutZero", "Matsuri"
+  ];
+  // avatar placeholders (using dicebear or ui-avatars? we'll use a free placeholder service via cloudimage)
+  // we generate consistent avatar by username initials? but better: unsplash random? We'll use a nice placeholder API: "https://randomuser.me/api/portraits/..." but consistent 
+  // We'll use robohash style? better: dicebear avatars (via ui-avatars? using img src with modern placeholder)
+  // To keep offline / no external dependency we'll use a colorful placeholder using `https://avatar.iran.liara.run/public/${gender}?username=...`
+  // but we want reliable images: using `https://api.dicebear.com/9.x/identicon/svg?seed=username` is great free and consistent.
+  // However to avoid CORS and any issues, we use dicebear's CDN (open source). It's safe.
+  
+  function getAvatarUrl(username) {
+    // circular, modern style
+    return `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(username)}&backgroundColor=2c2c3a&radius=50&fontSize=36&fontWeight=600`;
+  }
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
+  // generate random tiers with weighted distribution for top players realism
+  const getRandomTier = (rank) => {
+    if (rank <= 3) return 'S+';
+    if (rank <= 8) return 'S';
+    if (rank <= 13) return 'A';
+    if (rank <= 18) return 'B';
+    return 'C';
+  };
 
-// Open modal
-document.getElementById("adminLoginBtn").addEventListener("click", () => {
-  document.getElementById("adminModal").style.display = "flex";
-  document.getElementById("loginContent").style.display = "block";
-  document.getElementById("addPlayerContent").style.display = "none";
-});
-
-// Admin login
-function adminLogin() {
-  const email = document.getElementById("adminEmail").value;
-  const pass = document.getElementById("adminPass").value;
-  auth.signInWithEmailAndPassword(email, pass)
-  .then(() => {
-      alert("Login successful!");
-      document.getElementById("loginContent").style.display = "none";
-      document.getElementById("addPlayerContent").style.display = "block";
-  })
-  .catch(err => alert("Login failed: "+err.message));
-}
-
-// Add player
-function addPlayer() {
-  const name = document.getElementById("playerName").value;
-  const npot = document.getElementById("playerNpot").value;
-  const sword = document.getElementById("playerSword").value;
-  const crystal = document.getElementById("playerCrystal").value;
-  const smp = document.getElementById("playerSmp").value;
-  const mace = document.getElementById("playerMace").value;
-
-  if(!name) return alert("Enter player name!");
-
-  db.collection("players").add({name,npot,sword,crystal,smp,mace})
-  .then(() => {
-    document.getElementById("playerName").value="";
-    document.getElementById("playerNpot").value="";
-    document.getElementById("playerSword").value="";
-    document.getElementById("playerCrystal").value="";
-    document.getElementById("playerSmp").value="";
-    document.getElementById("playerMace").value="";
-  });
-}
-
-// Display live players
-db.collection("players").orderBy("name").onSnapshot(snapshot=>{
-  const table = document.getElementById("rankingTable");
-  table.innerHTML = `<tr>
-      <th>No.</th><th>Player</th><th>NPot</th><th>Sword</th><th>Crystal</th><th>SMP</th><th>Mace</th>
-  </tr>`;
-  let i=1;
-  snapshot.forEach(doc=>{
-      const data = doc.data();
-      const row = table.insertRow(-1);
-      row.insertCell(0).innerText=i++;
-      row.insertCell(1).innerText=data.name;
-      row.insertCell(2).innerText=data.npot;
-      row.insertCell(3).innerText=data.sword;
-      row.insertCell(4).innerText=data.crystal;
-      row.insertCell(5).innerText=data.smp;
-      row.insertCell(6).innerText=data.mace;
-  });
-});
-
-// Close modal
-function closeModal(){
-  document.getElementById("adminModal").style.display = "none";
-}
-
-// Gamemode button highlight
-const buttons = document.querySelectorAll('.gamemode-btn');
-buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-        buttons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+  // build 25 players
+  let players = [];
+  for (let i = 1; i <= 28; i++) {
+    let username;
+    if (i <= namePool.length) username = namePool[i-1];
+    else username = `Player${i}` + (i%7 === 0 ? "X" : "");
+    let tier;
+    if (i === 1) tier = "S+";
+    else if (i === 2) tier = "S+";
+    else if (i === 3) tier = "S+";
+    else if (i <= 7) tier = "S";
+    else if (i <= 12) tier = "A";
+    else if (i <= 18) tier = "B";
+    else tier = "C";
+    // minor manual adjustment for flavor
+    if (username === "Rekkles") tier = "S+";
+    if (username === "ShadowReap") tier = "S";
+    if (username === "MirageOP") tier = "A";
+    if (username === "Kurogane") tier = "B";
+    if (username === "ScoutZero") tier = "S+";
+    players.push({
+      rank: i,
+      username: username,
+      tier: tier,
+      avatarUrl: getAvatarUrl(username)
     });
-});
+  }
+  // override some to have at least 20 varied
+  // add extra players for 28 total
+  players.push({ rank: 29, username: "GodlyRift", tier: "S+", avatarUrl: getAvatarUrl("GodlyRift") });
+  players.push({ rank: 30, username: "OmegaFlash", tier: "S", avatarUrl: getAvatarUrl("OmegaFlash") });
+  players.push({ rank: 31, username: "CrimsonFang", tier: "A", avatarUrl: getAvatarUrl("CrimsonFang") });
+  players.push({ rank: 32, username: "LethalMist", tier: "B", avatarUrl: getAvatarUrl("LethalMist") });
+  players.push({ rank: 33, username: "Whisperzz", tier: "C", avatarUrl: getAvatarUrl("Whisperzz") });
+  
+  // sort by rank ascending
+  players.sort((a,b) => a.rank - b.rank);
+  // reassign ranks to keep consistency (after any manual)
+  players.forEach((p, idx) => { p.rank = idx + 1; });
+  
+  // ----- DOM elements -----
+  const playersListDiv = document.getElementById('playersList');
+  const searchInput = document.getElementById('searchInput');
+  const tierFilter = document.getElementById('tierFilter');
+  const sortRankBtn = document.getElementById('sortRankBtn');
+  
+  let currentFilterTier = 'all';
+  let currentSearch = '';
+  let currentSortDirection = 'asc'; // default ascending rank (but our base is asc)
+  
+  // helper: tier to class
+  function getTierClass(tier) {
+    switch(tier) {
+      case 'S+': return 'tier-Splus';
+      case 'S': return 'tier-S';
+      case 'A': return 'tier-A';
+      case 'B': return 'tier-B';
+      case 'C': return 'tier-C';
+      default: return 'tier-C';
+    }
+  }
+  
+  // render leaderboard with filtering, sorting, and top3 highlight
+  function renderLeaderboard() {
+    let filtered = [...players];
+    
+    // search filter
+    if (currentSearch.trim() !== '') {
+      const lowerSearch = currentSearch.toLowerCase();
+      filtered = filtered.filter(p => p.username.toLowerCase().includes(lowerSearch));
+    }
+    
+    // tier filter
+    if (currentFilterTier !== 'all') {
+      filtered = filtered.filter(p => p.tier === currentFilterTier);
+    }
+    
+    // sort by rank (always ascending)
+    filtered.sort((a,b) => a.rank - b.rank);
+    
+    if (filtered.length === 0) {
+      playersListDiv.innerHTML = `<div class="no-results">⚡ No warriors found ⚡</div>`;
+      return;
+    }
+    
+    // build rows
+    let html = '';
+    filtered.forEach(player => {
+      const rankNum = player.rank;
+      const isTop3 = rankNum === 1 || rankNum === 2 || rankNum === 3;
+      let rowClass = 'player-row';
+      if (rankNum === 1) rowClass += ' top-1';
+      else if (rankNum === 2) rowClass += ' top-2';
+      else if (rankNum === 3) rowClass += ' top-3';
+      
+      // glowing rank number for top3
+      const rankGlowClass = (rankNum <= 3) ? 'glowing' : '';
+      
+      const tierClass = getTierClass(player.tier);
+      // badge text (display S+ as S+)
+      let tierDisplay = player.tier;
+      
+      html += `
+        <div class="${rowClass}" style="animation-delay: ${Math.min(0.05 * (filtered.indexOf(player) % 10), 0.3)}s;">
+          <div class="rank-number ${rankGlowClass}">#${rankNum}</div>
+          <div class="avatar-wrapper">
+            <img class="avatar" src="${player.avatarUrl}" alt="avatar" loading="lazy" onerror="this.src='https://api.dicebear.com/9.x/identicon/svg?seed=${player.username}'">
+          </div>
+          <div class="username">${escapeHtml(player.username)}</div>
+          <div class="tier-badge ${tierClass}">${tierDisplay}</div>
+        </div>
+      `;
+    });
+    playersListDiv.innerHTML = html;
+  }
+  
+  // simple escape
+  function escapeHtml(str) {
+    return str.replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    });
+  }
+  
+  // Event listeners
+  searchInput.addEventListener('input', (e) => {
+    currentSearch = e.target.value;
+    renderLeaderboard();
+  });
+  
+  tierFilter.addEventListener('change', (e) => {
+    currentFilterTier = e.target.value;
+    renderLeaderboard();
+  });
+  
+  sortRankBtn.addEventListener('click', () => {
+    // sort by rank ascending is default, but we keep sorting by rank anyway (makes sure)
+    // also toggling maybe but requirement "sort by rank ascending" so we re-sort list ascending.
+    // we can also just re-render. additional effect: users might want assurance, but we keep asc.
+    // Notify with a small style effect.
+    sortRankBtn.style.transform = "scale(0.97)";
+    setTimeout(() => sortRankBtn.style.transform = "", 150);
+    renderLeaderboard();
+  });
+  
+  // initialize page with fade-in animation via css
+  window.addEventListener('DOMContentLoaded', () => {
+    renderLeaderboard();
+    // add extra glow animation to top cards ready
+  });
+  
+  // optional: firebase ready structure: we can leave data array flexible for later connection
+  // For supabase/firebase, just replace players array with fetch call.
+  console.log("Asia Tiers ready - premium leaderboard");
+  
+  // add some mobile smoothing
+  if ('ontouchstart' in window) {
+    document.body.style.touchAction = 'pan-y pinch-zoom';
+  }
 </script>
 </body>
 </html>
