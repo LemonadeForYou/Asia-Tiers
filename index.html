@@ -3,77 +3,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Asia Tiers | Competitive PvP Rankings</title>
+  <title>Asia Tiers | Elite PvP Rankings</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Poppins', sans-serif;
+      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, 'Poppins', sans-serif;
     }
 
     body {
       min-height: 100vh;
-      background: radial-gradient(circle at 10% 20%, #0a0a1a, #03030c);
-      background-attachment: fixed;
-      padding: 0 1rem 3rem;
-      color: #f0f0f8;
+      background: #0a0a14;
+      overflow-x: hidden;
+      position: relative;
     }
 
-    /* Glassmorphism background effect */
-    body::before {
-      content: '';
+    /* ---------- ANIMATED BACKGROUND (Particles & Stars) ---------- */
+    #bg-canvas {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      backdrop-filter: blur(3px);
-      background: rgba(5, 5, 20, 0.25);
       z-index: -2;
       pointer-events: none;
+      background: radial-gradient(circle at 30% 10%, #0c0c1a, #020208);
     }
 
-    /* Smooth scroll */
-    html {
-      scroll-behavior: smooth;
+    .glow-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 30%, rgba(100, 60, 200, 0.08), transparent 70%);
+      pointer-events: none;
+      z-index: -1;
     }
 
-    /* sticky navbar */
+    /* main container */
+    .main-wrapper {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem 3rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Squircle helper: border-radius with smooth 30px-24px mix */
+    .squircle {
+      border-radius: 28px;
+    }
+
+    .squircle-sm {
+      border-radius: 20px;
+    }
+
+    /* Navbar - squircle glass */
     .navbar {
       position: sticky;
-      top: 0;
+      top: 16px;
       z-index: 100;
-      background: rgba(10, 10, 25, 0.75);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-      padding: 1rem 2rem;
+      background: rgba(12, 12, 25, 0.65);
+      backdrop-filter: blur(18px);
+      border-radius: 40px;
+      padding: 0.9rem 2rem;
       display: flex;
       flex-wrap: wrap;
-      align-items: baseline;
+      align-items: center;
       justify-content: space-between;
       gap: 1rem;
-    }
-
-    .brand {
-      display: flex;
-      flex-direction: column;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
     }
 
     .brand h1 {
       font-size: 1.9rem;
-      background: linear-gradient(135deg, #f5e7a3, #d4af37, #b8860b);
+      background: linear-gradient(135deg, #f5e7a3, #e6b422, #c9951e);
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
-      letter-spacing: 1px;
-      text-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+      letter-spacing: -0.5px;
+      text-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
     }
 
     .sub {
-      font-size: 0.8rem;
-      color: #a9a9c0;
+      font-size: 0.75rem;
+      color: #b9b9e0;
       letter-spacing: 0.5px;
     }
 
@@ -81,18 +99,17 @@
       display: flex;
       gap: 1rem;
       flex-wrap: wrap;
-      align-items: center;
     }
 
     .search-box {
-      background: rgba(20, 20, 40, 0.7);
+      background: rgba(25, 25, 45, 0.8);
       border: 1px solid rgba(212, 175, 55, 0.4);
       border-radius: 40px;
-      padding: 0.5rem 1rem;
+      padding: 0.55rem 1.2rem;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      backdrop-filter: blur(4px);
+      gap: 0.6rem;
+      backdrop-filter: blur(8px);
     }
 
     .search-box input {
@@ -108,35 +125,120 @@
       color: #b0b0d0;
     }
 
-    .search-box i {
-      color: #d4af37;
-    }
-
-    select {
-      background: rgba(20, 20, 40, 0.8);
+    select, .sort-btn {
+      background: rgba(25, 25, 45, 0.85);
       border: 1px solid rgba(212, 175, 55, 0.5);
       border-radius: 40px;
-      padding: 0.5rem 1.2rem;
+      padding: 0.55rem 1.3rem;
       color: white;
       font-weight: 500;
       cursor: pointer;
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(8px);
       font-size: 0.85rem;
+      transition: all 0.2s ease;
     }
 
-    /* leaderboard container */
+    select:hover, .sort-btn:hover {
+      background: rgba(60, 55, 90, 0.9);
+      border-color: #d4af37;
+      transform: scale(0.98);
+    }
+
+    /* ----- PODIUM SECTION (squircle cards) ----- */
+    .podium-section {
+      margin: 2rem 0 2.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 1.8rem;
+      flex-wrap: wrap;
+    }
+
+    .podium-card {
+      background: rgba(18, 18, 35, 0.65);
+      backdrop-filter: blur(16px);
+      border-radius: 32px;
+      padding: 1.2rem 1.2rem 1rem;
+      text-align: center;
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: 180px;
+      cursor: default;
+    }
+
+    .podium-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .podium-1 {
+      background: linear-gradient(145deg, rgba(212, 175, 55, 0.25), rgba(80, 60, 25, 0.4));
+      border: 1px solid rgba(212, 175, 55, 0.8);
+      box-shadow: 0 0 28px rgba(212, 175, 55, 0.5);
+      width: 210px;
+      padding: 1.6rem 1rem;
+    }
+
+    .podium-2 {
+      border: 1px solid rgba(192, 192, 210, 0.7);
+      box-shadow: 0 0 18px rgba(170, 170, 200, 0.4);
+    }
+
+    .podium-3 {
+      border: 1px solid rgba(205, 150, 80, 0.7);
+      box-shadow: 0 0 14px rgba(205, 127, 50, 0.4);
+    }
+
+    .podium-rank {
+      font-size: 1rem;
+      font-weight: 700;
+      background: rgba(0, 0, 0, 0.5);
+      display: inline-block;
+      padding: 0.2rem 0.8rem;
+      border-radius: 40px;
+      margin-bottom: 0.8rem;
+    }
+
+    .podium-avatar {
+      width: 85px;
+      height: 85px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #d4af37;
+      margin: 0.5rem auto;
+      background: #1e1e2a;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+    }
+
+    .podium-1 .podium-avatar {
+      width: 100px;
+      height: 100px;
+      border-width: 4px;
+    }
+
+    .podium-username {
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin: 0.6rem 0 0.3rem;
+    }
+
+    .podium-tier {
+      font-weight: 800;
+      padding: 0.25rem 0.8rem;
+      border-radius: 30px;
+      display: inline-block;
+      font-size: 0.8rem;
+    }
+
+    /* leaderboard container squircle */
     .leaderboard-container {
-      max-width: 1300px;
-      margin: 2rem auto;
-      background: rgba(8, 8, 20, 0.45);
-      backdrop-filter: blur(12px);
-      border-radius: 2rem;
+      background: rgba(8, 8, 20, 0.55);
+      backdrop-filter: blur(20px);
+      border-radius: 36px;
       padding: 1.5rem 1rem;
-      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(212, 175, 55, 0.2);
+      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.5);
     }
 
-    /* header columns (desktop) */
     .leaderboard-header {
       display: grid;
       grid-template-columns: 80px 90px 1fr 120px;
@@ -145,274 +247,218 @@
       border-bottom: 1px solid rgba(212, 175, 55, 0.3);
       font-weight: 600;
       color: #cdcdff;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       letter-spacing: 0.5px;
     }
 
-    /* cards / rows */
+    /* player rows squircle */
     .player-row {
       display: grid;
       grid-template-columns: 80px 90px 1fr 120px;
       align-items: center;
-      background: rgba(18, 18, 35, 0.6);
+      background: rgba(18, 18, 35, 0.55);
       margin: 0.7rem 0;
       padding: 0.7rem 1rem;
-      border-radius: 1.2rem;
-      transition: all 0.25s ease-in-out;
+      border-radius: 28px;
+      transition: all 0.25s ease;
       border: 1px solid transparent;
       backdrop-filter: blur(4px);
-      animation: fadeSlideUp 0.4s ease forwards;
+      animation: fadeSlide 0.4s ease forwards;
       opacity: 0;
     }
 
     .player-row:hover {
       transform: translateY(-3px) scale(1.01);
-      background: rgba(30, 30, 55, 0.8);
+      background: rgba(32, 32, 55, 0.85);
       border-color: rgba(212, 175, 55, 0.5);
-      box-shadow: 0 12px 20px -12px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 12px 22px -10px rgba(0, 0, 0, 0.6);
     }
 
-    /* Top 3 special styling */
+    /* top row glows */
     .player-row.top-1 {
       background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(100, 70, 20, 0.4));
       border: 1px solid rgba(212, 175, 55, 0.7);
-      box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
-      transform: scale(1.01);
+      box-shadow: 0 0 14px rgba(212, 175, 55, 0.4);
     }
+
     .player-row.top-2 {
       background: linear-gradient(135deg, rgba(180, 150, 70, 0.15), rgba(80, 60, 25, 0.3));
       border: 1px solid rgba(200, 170, 80, 0.5);
     }
+
     .player-row.top-3 {
       background: linear-gradient(135deg, rgba(150, 120, 50, 0.12), rgba(70, 50, 20, 0.25));
       border: 1px solid rgba(180, 150, 60, 0.4);
     }
 
-    @keyframes fadeSlideUp {
-      0% {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    @keyframes fadeSlide {
+      0% { opacity: 0; transform: translateY(18px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
 
-    /* rank styling */
     .rank-number {
       font-size: 1.7rem;
       font-weight: 800;
-      text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
-      letter-spacing: -1px;
+      text-shadow: 0 0 6px rgba(0,0,0,0.5);
     }
+
     .rank-number.glowing {
-      background: linear-gradient(135deg, #ffd966, #e6b422);
+      background: linear-gradient(135deg, #ffdf8c, #e6b422);
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
-      text-shadow: 0 0 10px rgba(230, 180, 34, 0.6);
+      text-shadow: 0 0 12px rgba(230, 180, 34, 0.7);
     }
 
-    /* avatar */
     .avatar {
       width: 52px;
       height: 52px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid rgba(212, 175, 55, 0.6);
+      border: 2px solid rgba(212, 175, 55, 0.7);
       background: #1e1e2a;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
       transition: transform 0.2s;
-    }
-    .player-row:hover .avatar {
-      transform: scale(1.05);
     }
 
     .username {
       font-weight: 600;
-      font-size: 1.1rem;
+      font-size: 1rem;
       letter-spacing: -0.2px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
     }
 
-    /* tier badges */
     .tier-badge {
       display: inline-block;
       padding: 0.4rem 1rem;
       border-radius: 40px;
       font-weight: 800;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       text-align: center;
       min-width: 70px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
       transition: all 0.2s;
     }
 
-    .tier-Splus { background: linear-gradient(135deg, #f5b042, #d4af37); color: #1e1a0c; box-shadow: 0 0 12px #f5b042; text-shadow: none; font-weight: 800; border: 1px solid #ffdf8c; }
-    .tier-S { background: linear-gradient(135deg, #f39c12, #e67e22); color: #2c1a0a; box-shadow: 0 2px 8px rgba(243, 156, 18, 0.6); font-weight: 800; }
-    .tier-A { background: #2e7d32; color: #e8f5e9; box-shadow: 0 2px 8px #2e7d3280; border: 1px solid #66bb6a; }
-    .tier-B { background: #1565c0; color: #e3f2fd; box-shadow: 0 2px 8px #1565c080; border: 1px solid #42a5f5; }
-    .tier-C { background: #5d5d6e; color: #f0f0f0; box-shadow: 0 2px 6px #3a3a4e; border: 1px solid #9090aa; }
+    .tier-Splus { background: linear-gradient(135deg, #f5b042, #d4af37); color: #1e1a0c; box-shadow: 0 0 10px #f5b042; }
+    .tier-S { background: linear-gradient(135deg, #f39c12, #e67e22); color: #2c1a0a; box-shadow: 0 2px 10px rgba(243,156,18,0.5); }
+    .tier-A { background: #2e7d32; color: #e8f5e9; box-shadow: 0 2px 8px #2e7d3280; }
+    .tier-B { background: #1565c0; color: #e3f2fd; }
+    .tier-C { background: #5d5d6e; color: #f0f0f0; }
 
-    /* empty state */
     .no-results {
       text-align: center;
       padding: 3rem;
       color: #ccd;
-      font-size: 1.2rem;
     }
 
     /* responsive */
-    @media (max-width: 780px) {
-      .leaderboard-header {
-        display: none;
-      }
-      .player-row {
-        grid-template-columns: 1fr;
-        gap: 0.7rem;
-        text-align: center;
-        padding: 1rem;
-      }
-      .rank-number, .avatar, .username, .tier-badge {
-        justify-self: center;
-        margin: 0 auto;
-      }
-      .rank-number {
-        font-size: 1.6rem;
-      }
-      .username {
-        justify-content: center;
-      }
-      .navbar {
-        flex-direction: column;
-        align-items: stretch;
-        text-align: center;
-      }
-      .controls {
-        justify-content: center;
-      }
-      .search-box input {
-        width: 140px;
-      }
+    @media (max-width: 800px) {
+      .leaderboard-header { display: none; }
+      .player-row { grid-template-columns: 1fr; gap: 0.6rem; text-align: center; padding: 1rem; }
+      .rank-number, .avatar, .username, .tier-badge { justify-self: center; margin: 0 auto; }
+      .podium-section { gap: 1rem; }
+      .podium-card { width: 140px; padding: 0.8rem; }
+      .podium-1 { width: 160px; }
+      .podium-avatar { width: 65px; height: 65px; }
+      .podium-1 .podium-avatar { width: 80px; height: 80px; }
+      .navbar { flex-direction: column; align-items: stretch; text-align: center; border-radius: 32px; }
+      .controls { justify-content: center; }
     }
 
-    @media (max-width: 480px) {
-      .leaderboard-container {
-        padding: 1rem 0.8rem;
-      }
-      .tier-badge {
-        font-size: 0.8rem;
-        padding: 0.3rem 0.8rem;
-      }
-      .brand h1 {
-        font-size: 1.5rem;
-      }
+    @media (max-width: 540px) {
+      .podium-card .podium-username { font-size: 0.9rem; }
+      .podium-card { width: 115px; }
     }
 
     footer {
       text-align: center;
-      margin-top: 1rem;
-      font-size: 0.75rem;
-      color: #8a8aac;
+      margin-top: 2rem;
+      font-size: 0.7rem;
+      color: #7a7aac;
     }
-    i, .icon {
-      font-style: normal;
-      font-weight: normal;
-    }
-    .fa, .fas {
-      font-family: 'Segoe UI', system-ui;
+    .sort-btn {
+      background: rgba(25, 25, 45, 0.85);
+      border: 1px solid rgba(212, 175, 55, 0.5);
+      border-radius: 40px;
+      padding: 0.55rem 1.3rem;
+      font-weight: 500;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-<div class="navbar">
-  <div class="brand">
-    <h1>⚔️ ASIA TIERS</h1>
-    <div class="sub">Competitive PvP Rankings</div>
-  </div>
-  <div class="controls">
-    <div class="search-box">
-      <span>🔍</span>
-      <input type="text" id="searchInput" placeholder="Search username...">
-    </div>
-    <select id="tierFilter">
-      <option value="all">All Tiers</option>
-      <option value="S+">S+</option>
-      <option value="S">S</option>
-      <option value="A">A</option>
-      <option value="B">B</option>
-      <option value="C">C</option>
-    </select>
-    <button id="sortRankBtn" style="background: rgba(212,175,55,0.2); border:1px solid #d4af37; border-radius:40px; padding:0.5rem 1rem; color:white; font-weight:bold; cursor:pointer; backdrop-filter:blur(4px);">⬇️ Sort by Rank</button>
-  </div>
-</div>
+<canvas id="bg-canvas"></canvas>
+<div class="glow-overlay"></div>
 
-<div class="leaderboard-container" id="leaderboardContainer">
-  <div class="leaderboard-header">
-    <div>RANK</div>
-    <div>AVATAR</div>
-    <div>USERNAME</div>
-    <div>TIER</div>
+<div class="main-wrapper">
+  <div class="navbar squircle">
+    <div class="brand">
+      <h1>🏆 ASIA TIERS</h1>
+      <div class="sub">Competitive PvP Rankings · Global Elite</div>
+    </div>
+    <div class="controls">
+      <div class="search-box">
+        <span>🔍</span>
+        <input type="text" id="searchInput" placeholder="Search warrior...">
+      </div>
+      <select id="tierFilter">
+        <option value="all">All Tiers</option>
+        <option value="S+">S+</option>
+        <option value="S">S</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+      </select>
+      <div class="sort-btn" id="sortRankBtn">⬇️ Sort by Rank</div>
+    </div>
   </div>
-  <div id="playersList"></div>
+
+  <!-- PODIUM SECTION (Top 3) -->
+  <div class="podium-section" id="podiumArea"></div>
+
+  <!-- LEADERBOARD TABLE -->
+  <div class="leaderboard-container">
+    <div class="leaderboard-header">
+      <div>RANK</div>
+      <div>AVATAR</div>
+      <div>USERNAME</div>
+      <div>TIER</div>
+    </div>
+    <div id="playersList"></div>
+  </div>
+  <footer>© Asia Tiers — elite rankings | real-time ready · futuristic arena</footer>
 </div>
-<footer>© Asia Tiers — elite PvP leaderboard | real-time ready</footer>
 
 <script>
-  // ---------- GENERATE 20+ SAMPLE PLAYERS ----------
-  const tierList = ['S+', 'S', 'A', 'B', 'C'];
-  // usernames pool for variety
+  // ----------------------------- PLAYER DATA (30+ players) -----------------------------
   const namePool = [
     "CreqmXD", "FrostBlade", "ShadowReap", "VoidWalker", "StormSage", "RavenLock", "ZenithX", "MirageOP",
     "PhantomKite", "EmberFury", "TitanSlayer", "NovaRift", "Zephyr_", "LunarHaze", "AshenOne", "DuskBringer",
-    "Sylphie", "Kurogane", "YukiDesu", "Raijin_", "SenpaiPvP", "Rekkles", "FakerLite", "ScoutZero", "Matsuri"
+    "Sylphie", "Kurogane", "YukiDesu", "Raijin_", "SenpaiPvP", "Rekkles", "FakerLite", "ScoutZero", "Matsuri",
+    "OrochiX", "Tempest", "KarmaVortex"
   ];
-  // avatar placeholders (using dicebear or ui-avatars? we'll use a free placeholder service via cloudimage)
-  // we generate consistent avatar by username initials? but better: unsplash random? We'll use a nice placeholder API: "https://randomuser.me/api/portraits/..." but consistent 
-  // We'll use robohash style? better: dicebear avatars (via ui-avatars? using img src with modern placeholder)
-  // To keep offline / no external dependency we'll use a colorful placeholder using `https://avatar.iran.liara.run/public/${gender}?username=...`
-  // but we want reliable images: using `https://api.dicebear.com/9.x/identicon/svg?seed=username` is great free and consistent.
-  // However to avoid CORS and any issues, we use dicebear's CDN (open source). It's safe.
   
   function getAvatarUrl(username) {
-    // circular, modern style
-    return `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(username)}&backgroundColor=2c2c3a&radius=50&fontSize=36&fontWeight=600`;
+    return `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(username)}&backgroundColor=2c2c3a&radius=50&fontSize=36&fontWeight=600&colors=gold,orange,purple`;
   }
 
-  // generate random tiers with weighted distribution for top players realism
-  const getRandomTier = (rank) => {
-    if (rank <= 3) return 'S+';
-    if (rank <= 8) return 'S';
-    if (rank <= 13) return 'A';
-    if (rank <= 18) return 'B';
-    return 'C';
-  };
-
-  // build 25 players
   let players = [];
-  for (let i = 1; i <= 28; i++) {
+  // generate 32 players with realistic tier distribution
+  for (let i = 1; i <= 32; i++) {
     let username;
     if (i <= namePool.length) username = namePool[i-1];
-    else username = `Player${i}` + (i%7 === 0 ? "X" : "");
+    else username = `Elite${i}`;
     let tier;
     if (i === 1) tier = "S+";
     else if (i === 2) tier = "S+";
     else if (i === 3) tier = "S+";
-    else if (i <= 7) tier = "S";
-    else if (i <= 12) tier = "A";
-    else if (i <= 18) tier = "B";
+    else if (i <= 8) tier = "S";
+    else if (i <= 14) tier = "A";
+    else if (i <= 21) tier = "B";
     else tier = "C";
-    // minor manual adjustment for flavor
     if (username === "Rekkles") tier = "S+";
-    if (username === "ShadowReap") tier = "S";
+    if (username === "ScoutZero") tier = "S+";
     if (username === "MirageOP") tier = "A";
     if (username === "Kurogane") tier = "B";
-    if (username === "ScoutZero") tier = "S+";
     players.push({
       rank: i,
       username: username,
@@ -420,140 +466,210 @@
       avatarUrl: getAvatarUrl(username)
     });
   }
-  // override some to have at least 20 varied
-  // add extra players for 28 total
-  players.push({ rank: 29, username: "GodlyRift", tier: "S+", avatarUrl: getAvatarUrl("GodlyRift") });
-  players.push({ rank: 30, username: "OmegaFlash", tier: "S", avatarUrl: getAvatarUrl("OmegaFlash") });
-  players.push({ rank: 31, username: "CrimsonFang", tier: "A", avatarUrl: getAvatarUrl("CrimsonFang") });
-  players.push({ rank: 32, username: "LethalMist", tier: "B", avatarUrl: getAvatarUrl("LethalMist") });
-  players.push({ rank: 33, username: "Whisperzz", tier: "C", avatarUrl: getAvatarUrl("Whisperzz") });
-  
-  // sort by rank ascending
+  // final manual adjustments
+  players.push({ rank: 33, username: "GodlyRift", tier: "S+", avatarUrl: getAvatarUrl("GodlyRift") });
+  players.push({ rank: 34, username: "OmegaFlash", tier: "S", avatarUrl: getAvatarUrl("OmegaFlash") });
+  players.push({ rank: 35, username: "CrimsonFang", tier: "A", avatarUrl: getAvatarUrl("CrimsonFang") });
   players.sort((a,b) => a.rank - b.rank);
-  // reassign ranks to keep consistency (after any manual)
   players.forEach((p, idx) => { p.rank = idx + 1; });
   
-  // ----- DOM elements -----
+  // global variables
+  let currentSearch = '';
+  let currentTier = 'all';
+  let currentSort = 'asc';
+  
   const playersListDiv = document.getElementById('playersList');
   const searchInput = document.getElementById('searchInput');
   const tierFilter = document.getElementById('tierFilter');
-  const sortRankBtn = document.getElementById('sortRankBtn');
+  const sortBtn = document.getElementById('sortRankBtn');
+  const podiumArea = document.getElementById('podiumArea');
   
-  let currentFilterTier = 'all';
-  let currentSearch = '';
-  let currentSortDirection = 'asc'; // default ascending rank (but our base is asc)
-  
-  // helper: tier to class
   function getTierClass(tier) {
     switch(tier) {
       case 'S+': return 'tier-Splus';
       case 'S': return 'tier-S';
       case 'A': return 'tier-A';
       case 'B': return 'tier-B';
-      case 'C': return 'tier-C';
       default: return 'tier-C';
     }
   }
   
-  // render leaderboard with filtering, sorting, and top3 highlight
+  // Render Podium (Top 3)
+  function renderPodium() {
+    const top3 = players.slice(0,3);
+    if (top3.length === 0) return;
+    const [first, second, third] = top3;
+    const podiumHTML = `
+      <div class="podium-card podium-2 squircle">
+        <div class="podium-rank">🥈 #2</div>
+        <img class="podium-avatar" src="${second.avatarUrl}" alt="avatar" loading="lazy">
+        <div class="podium-username">${escapeHtml(second.username)}</div>
+        <div class="podium-tier ${getTierClass(second.tier)}">${second.tier}</div>
+      </div>
+      <div class="podium-card podium-1 squircle">
+        <div class="podium-rank">👑 #1</div>
+        <img class="podium-avatar" src="${first.avatarUrl}" alt="avatar">
+        <div class="podium-username">${escapeHtml(first.username)}</div>
+        <div class="podium-tier ${getTierClass(first.tier)}">${first.tier}</div>
+        <div style="font-size:0.7rem; margin-top:6px;">⭐ GOLD STAR ⭐</div>
+      </div>
+      <div class="podium-card podium-3 squircle">
+        <div class="podium-rank">🥉 #3</div>
+        <img class="podium-avatar" src="${third.avatarUrl}" alt="avatar">
+        <div class="podium-username">${escapeHtml(third.username)}</div>
+        <div class="podium-tier ${getTierClass(third.tier)}">${third.tier}</div>
+      </div>
+    `;
+    podiumArea.innerHTML = podiumHTML;
+  }
+  
+  function escapeHtml(str) {
+    return str.replace(/[&<>]/g, function(m) {
+      if(m === '&') return '&amp;';
+      if(m === '<') return '&lt;';
+      if(m === '>') return '&gt;';
+      return m;
+    });
+  }
+  
   function renderLeaderboard() {
     let filtered = [...players];
-    
-    // search filter
-    if (currentSearch.trim() !== '') {
-      const lowerSearch = currentSearch.toLowerCase();
-      filtered = filtered.filter(p => p.username.toLowerCase().includes(lowerSearch));
+    if (currentSearch.trim() !== "") {
+      const lower = currentSearch.toLowerCase();
+      filtered = filtered.filter(p => p.username.toLowerCase().includes(lower));
     }
-    
-    // tier filter
-    if (currentFilterTier !== 'all') {
-      filtered = filtered.filter(p => p.tier === currentFilterTier);
+    if (currentTier !== 'all') {
+      filtered = filtered.filter(p => p.tier === currentTier);
     }
-    
-    // sort by rank (always ascending)
+    // sort by rank ascending always (requirement)
     filtered.sort((a,b) => a.rank - b.rank);
     
     if (filtered.length === 0) {
-      playersListDiv.innerHTML = `<div class="no-results">⚡ No warriors found ⚡</div>`;
+      playersListDiv.innerHTML = `<div class="no-results">⚔️ No warriors found in this tier ⚔️</div>`;
       return;
     }
     
-    // build rows
     let html = '';
     filtered.forEach(player => {
-      const rankNum = player.rank;
-      const isTop3 = rankNum === 1 || rankNum === 2 || rankNum === 3;
+      const rank = player.rank;
       let rowClass = 'player-row';
-      if (rankNum === 1) rowClass += ' top-1';
-      else if (rankNum === 2) rowClass += ' top-2';
-      else if (rankNum === 3) rowClass += ' top-3';
-      
-      // glowing rank number for top3
-      const rankGlowClass = (rankNum <= 3) ? 'glowing' : '';
-      
+      if (rank === 1) rowClass += ' top-1';
+      else if (rank === 2) rowClass += ' top-2';
+      else if (rank === 3) rowClass += ' top-3';
+      const glowClass = (rank <= 3) ? 'glowing' : '';
       const tierClass = getTierClass(player.tier);
-      // badge text (display S+ as S+)
-      let tierDisplay = player.tier;
-      
       html += `
-        <div class="${rowClass}" style="animation-delay: ${Math.min(0.05 * (filtered.indexOf(player) % 10), 0.3)}s;">
-          <div class="rank-number ${rankGlowClass}">#${rankNum}</div>
-          <div class="avatar-wrapper">
-            <img class="avatar" src="${player.avatarUrl}" alt="avatar" loading="lazy" onerror="this.src='https://api.dicebear.com/9.x/identicon/svg?seed=${player.username}'">
-          </div>
+        <div class="${rowClass}" style="animation-delay: ${Math.min(0.03 * filtered.indexOf(player), 0.25)}s;">
+          <div class="rank-number ${glowClass}">#${rank}</div>
+          <div><img class="avatar" src="${player.avatarUrl}" alt="avatar" loading="lazy" onerror="this.src='https://api.dicebear.com/9.x/identicon/svg?seed=${player.username}'"></div>
           <div class="username">${escapeHtml(player.username)}</div>
-          <div class="tier-badge ${tierClass}">${tierDisplay}</div>
+          <div class="tier-badge ${tierClass}">${player.tier}</div>
         </div>
       `;
     });
     playersListDiv.innerHTML = html;
   }
   
-  // simple escape
-  function escapeHtml(str) {
-    return str.replace(/[&<>]/g, function(m) {
-      if (m === '&') return '&amp;';
-      if (m === '<') return '&lt;';
-      if (m === '>') return '&gt;';
-      return m;
-    });
+  function updateAll() {
+    renderPodium();
+    renderLeaderboard();
   }
   
   // Event listeners
-  searchInput.addEventListener('input', (e) => {
-    currentSearch = e.target.value;
-    renderLeaderboard();
+  searchInput.addEventListener('input', (e) => { currentSearch = e.target.value; updateAll(); });
+  tierFilter.addEventListener('change', (e) => { currentTier = e.target.value; updateAll(); });
+  sortBtn.addEventListener('click', () => { 
+    // simply enforce rank sort (ascending)
+    updateAll();
+    sortBtn.style.transform = "scale(0.96)";
+    setTimeout(() => sortBtn.style.transform = "", 150);
   });
   
-  tierFilter.addEventListener('change', (e) => {
-    currentFilterTier = e.target.value;
-    renderLeaderboard();
-  });
+  // ---------- ANIMATED BACKGROUND (canvas particles & stars) ----------
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let width, height;
+  let particles = [];
+  let stars = [];
   
-  sortRankBtn.addEventListener('click', () => {
-    // sort by rank ascending is default, but we keep sorting by rank anyway (makes sure)
-    // also toggling maybe but requirement "sort by rank ascending" so we re-sort list ascending.
-    // we can also just re-render. additional effect: users might want assurance, but we keep asc.
-    // Notify with a small style effect.
-    sortRankBtn.style.transform = "scale(0.97)";
-    setTimeout(() => sortRankBtn.style.transform = "", 150);
-    renderLeaderboard();
-  });
-  
-  // initialize page with fade-in animation via css
-  window.addEventListener('DOMContentLoaded', () => {
-    renderLeaderboard();
-    // add extra glow animation to top cards ready
-  });
-  
-  // optional: firebase ready structure: we can leave data array flexible for later connection
-  // For supabase/firebase, just replace players array with fetch call.
-  console.log("Asia Tiers ready - premium leaderboard");
-  
-  // add some mobile smoothing
-  if ('ontouchstart' in window) {
-    document.body.style.touchAction = 'pan-y pinch-zoom';
+  function resizeCanvas() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
   }
-</script>
-</body>
-</html>
+  
+  class Particle {
+    constructor() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height;
+      this.radius = Math.random() * 2.5 + 1;
+      this.alpha = Math.random() * 0.4 + 0.2;
+      this.vx = (Math.random() - 0.5) * 0.25;
+      this.vy = (Math.random() - 0.5) * 0.15;
+      this.color = `rgba(212, 175, 55, ${this.alpha * 0.6})`;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < 0) this.x = width;
+      if (this.x > width) this.x = 0;
+      if (this.y < 0) this.y = height;
+      if (this.y > height) this.y = 0;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+    }
+  }
+  
+  class Star {
+    constructor() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height;
+      this.size = Math.random() * 1.8;
+      this.twinkle = Math.random() * 0.5 + 0.3;
+      this.speed = 0.005;
+    }
+    draw(time) {
+      const intensity = this.twinkle + Math.sin(time * 0.002 + this.x) * 0.2;
+      ctx.fillStyle = `rgba(255, 240, 180, ${intensity * 0.7})`;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+      ctx.fill();
+    }
+  }
+  
+  function initBackground() {
+    resizeCanvas();
+    particles = [];
+    stars = [];
+    for (let i = 0; i < 110; i++) particles.push(new Particle());
+    for (let i = 0; i < 180; i++) stars.push(new Star());
+  }
+  
+  let animationTime = 0;
+  function animateBackground() {
+    if (!ctx) return;
+    ctx.clearRect(0, 0, width, height);
+    // deep dark gradient
+    const grad = ctx.createLinearGradient(0, 0, width*0.8, height);
+    grad.addColorStop(0, '#03030c');
+    grad.addColorStop(1, '#0a0a1a');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, width, height);
+    // draw stars
+    for (let s of stars) {
+      s.draw(animationTime);
+    }
+    // draw particles (glowing dots)
+    for (let p of particles) {
+      p.update();
+      p.draw();
+    }
+    // additional floating orbs
+    ctx.shadowBlur = 0;
+    animationTime += 16;
+    requestAnimationFrame(anima
