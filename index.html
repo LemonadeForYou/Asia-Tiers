@@ -1,64 +1,219 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Void Tiers</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #1a1a1a;
-            color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            padding: 20px;
-        }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            max-width: 500px;
-        }
-        th, td {
-            border: 1px solid #555;
-            padding: 10px;
-            text-align: center;
-        }
-        th {
-            background-color: #7d00ff;
-        }
-        tr:nth-child(even) { background-color: #2a2a2a; }
-        tr:nth-child(odd) { background-color: #1f1f1f; }
-
-        /* Tierfarben */
-        .tier-HT1 { background-color: #7d00ff; color: #fff; }
-        .tier-LT1 { background-color: #ff4444; color: #fff; }
-        .tier-HT2 { background-color: #ff894a; color: #000; }
-        .tier-LT2 { background-color: #ffd33b; color: #000; }
-        .tier-HT3 { background-color: #55ff8a; color: #000; }
-        .tier-LT3 { background-color: #888888; color: #000; }
-        .tier-HT4 { background-color: #4444ff; color: #fff; }
-        .tier-LT4 { background-color: #aa44aa; color: #fff; }
-        .tier-HT5 { background-color: #ffaa00; color: #000; }
-        .tier-LT5 { background-color: #00ffaa; color: #000; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eclipse Tiers</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    font-family:'Press Start 2P',Arial,sans-serif;
+    background:linear-gradient(135deg,#000 0%,#1a0033 100%);
+    color:#e0e0e0;
+    overflow-x:hidden;
+    position:relative;
+}
+body::before {
+    content:''; position:fixed; top:0; left:0; width:100%; height:100%;
+    background:radial-gradient(circle at 50% 20%, rgba(138,43,226,0.3) 0%, transparent 70%);
+    pointer-events:none; z-index:-1;
+}
+body::after {
+    content:''; position:fixed; top:0; left:0; width:100%; height:100%;
+    background:radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.8) 100%);
+    pointer-events:none; z-index:-1;
+}
+.eclipse-glow { animation:eclipsePulse 3s infinite ease-in-out; }
+@keyframes eclipsePulse {
+    0%,100%{box-shadow:0 0 30px rgba(138,43,226,0.5),0 0 60px rgba(255,165,0,0.2);}
+    50%{box-shadow:0 0 50px rgba(138,43,226,0.8),0 0 100px rgba(255,165,0,0.4);}
+}
+.fade-in { animation:fadeIn 1s ease-in; }
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+header {position:fixed; top:0; width:100%; background:rgba(0,0,0,0.9); padding:20px; z-index:1000; text-align:center; border-bottom:1px solid rgba(138,43,226,0.3);}
+.title { font-size:2.5rem; color:#8a2be2; text-shadow:0 0 20px rgba(138,43,226,0.8),0 0 40px rgba(255,165,0,0.2); margin-bottom:10px; }
+nav { display:flex; justify-content:center; align-items:center; gap:20px; flex-wrap:wrap; }
+nav a { color:#e0e0e0; text-decoration:none; padding:10px 15px; border-radius:5px; transition:all 0.3s ease; }
+nav a:hover { background: rgba(138,43,226,0.2); color:#8a2be2; }
+.discord-btn { background:linear-gradient(45deg,#8a2be2,#4b0082); color:white; padding:10px 20px; border-radius:5px; display:flex; align-items:center; gap:5px; box-shadow:0 0 10px rgba(138,43,226,0.5); transition:all 0.3s ease; }
+.discord-btn:hover { box-shadow:0 0 20px rgba(138,43,226,0.8); }
+.section-title { text-align:center; font-size:2rem; color:#8a2be2; text-shadow:0 0 15px rgba(138,43,226,0.6); padding:40px 20px; margin-top:100px; }
+.gamemode-selector { display:flex; justify-content:center; gap:15px; padding:20px; background: rgba(26,26,26,0.9); border-radius:15px; margin:20px auto; max-width:950px; box-shadow:0 0 20px rgba(138,43,226,0.2); flex-wrap:wrap;}
+.gamemode-btn { display:flex; justify-content:center; align-items:center; padding:10px 15px; border-radius:10px; background:#333; border:2px solid transparent; transition:all 0.3s ease; cursor:pointer; filter: brightness(0.8); font-size:0.7rem; color:#e0e0e0; text-align:center;}
+.gamemode-btn.active { background: rgba(138,43,226,0.2); border-color:#8a2be2; box-shadow:0 0 15px rgba(138,43,226,0.8); filter:none; }
+.gamemode-btn:hover { filter:none; box-shadow:0 0 10px rgba(138,43,226,0.5); }
+.player-list { padding:20px; text-align:center; color:#e0e0e0; }
+.ranking-table { margin:30px auto; max-width:900px; border-collapse:collapse; width:90%; }
+.ranking-table th, .ranking-table td { border:2px solid #8a2be2; padding:10px; text-align:center; }
+.ranking-table th { background:#2a0055; color:#fff; }
+.ranking-table td { background:#1a001f; color:#e0e0e0; }
+button { padding:5px 10px; background:#8a2be2; color:#fff; border:none; border-radius:5px; cursor:pointer; }
+button:hover { background:#6a1fb8; }
+.modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); display:flex; justify-content:center; align-items:center; z-index:2000; display:none; }
+.modal-content { background:#1a001f; padding:20px; border-radius:10px; max-width:400px; width:90%; text-align:center; }
+.modal input { padding:10px; margin:10px 0; width:80%; border-radius:5px; border:none; }
+@media(max-width:768px){ .title{font-size:2rem;} .gamemode-selector{flex-wrap:wrap;gap:10px;} .ranking-table th,.ranking-table td{font-size:0.6rem; padding:8px;} }
+</style>
 </head>
 <body>
-    <table>
-        <tr>
-            <th>Tier</th>
-            <th>Ingame Name</th>
-            <th>Punkte</th>
-        </tr>
-        <tr class="tier-HT1"><td>HT1</td><td>Spieler1</td><td>60</td></tr>
-        <tr class="tier-LT1"><td>LT1</td><td>Spieler2</td><td>45</td></tr>
-        <tr class="tier-HT2"><td>HT2</td><td>Spieler3</td><td>30</td></tr>
-        <tr class="tier-LT2"><td>LT2</td><td>Spieler4</td><td>20</td></tr>
-        <tr class="tier-HT3"><td>HT3</td><td>Spieler5</td><td>10</td></tr>
-        <tr class="tier-LT3"><td>LT3</td><td>Spieler6</td><td>8</td></tr>
-        <tr class="tier-HT4"><td>HT4</td><td>Spieler7</td><td>4</td></tr>
-        <tr class="tier-LT4"><td>LT4</td><td>Spieler8</td><td>3</td></tr>
-        <tr class="tier-HT5"><td>HT5</td><td>Spieler9</td><td>2</td></tr>
-        <tr class="tier-LT5"><td>LT5</td><td>Spieler10</td><td>1</td></tr>
-    </table>
+
+<header>
+<div class="title eclipse-glow">Eclipse Tiers</div>
+<nav>
+<a href="#home">Home</a>
+<a href="#tierlists">Tierlists</a>
+<a href="#rules">Rules</a>
+<a href="#testers">Testers</a>
+<a href="#" class="discord-btn" id="adminLoginBtn">Admin Login</a>
+</nav>
+</header>
+
+<section id="tierlists">
+<div class="section-title fade-in">Tierlists</div>
+
+<div class="gamemode-selector fade-in">
+<div class="gamemode-btn active" data-mode="npot">NPot</div>
+<div class="gamemode-btn" data-mode="sword">Sword</div>
+<div class="gamemode-btn" data-mode="crystal">Crystal</div>
+<div class="gamemode-btn" data-mode="smp">SMP</div>
+<div class="gamemode-btn" data-mode="uhcpot">UHC Pot</div>
+<div class="gamemode-btn" data-mode="mace">Mace</div>
+<div class="gamemode-btn" data-mode="axe">Axe</div>
+</div>
+
+<table class="ranking-table fade-in" id="rankingTable">
+<tr>
+<th>No.</th>
+<th>Player</th>
+<th>NPot</th>
+<th>Sword</th>
+<th>Crystal</th>
+<th>SMP</th>
+<th>Mace</th>
+</tr>
+</table>
+</section>
+
+<!-- Admin Modal -->
+<div class="modal" id="adminModal">
+<div class="modal-content" id="loginContent">
+<h2>Admin Login</h2>
+<input type="email" placeholder="Email" id="adminEmail">
+<input type="password" placeholder="Password" id="adminPass">
+<button onclick="adminLogin()">Login</button>
+</div>
+
+<div class="modal-content" id="addPlayerContent" style="display:none;">
+<h2>Add Player</h2>
+<input type="text" placeholder="Player Name" id="playerName">
+<input type="text" placeholder="NPot" id="playerNpot">
+<input type="text" placeholder="Sword" id="playerSword">
+<input type="text" placeholder="Crystal" id="playerCrystal">
+<input type="text" placeholder="SMP" id="playerSmp">
+<input type="text" placeholder="Mace" id="playerMace">
+<button onclick="addPlayer()">Add Player</button>
+<button onclick="closeModal()">Close</button>
+</div>
+</div>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+// Firebase config (replace with your own)
+const firebaseConfig = {
+  apiKey: "AIzaSyA-RyZJfXYgwYwMqljFK7hvSiemMEYFyPE",
+  authDomain: "minecraft-tierlist-website.firebaseapp.com",
+  projectId: "minecraft-tierlist-website",
+  storageBucket: "minecraft-tierlist-website.appspot.com",
+  messagingSenderId: "739662401599",
+  appId: "1:739662401599:web:eeb9ed15ed7a9f4ddfa88a",
+  measurementId: "G-K4H3R33YN6"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// Open modal
+document.getElementById("adminLoginBtn").addEventListener("click", () => {
+  document.getElementById("adminModal").style.display = "flex";
+  document.getElementById("loginContent").style.display = "block";
+  document.getElementById("addPlayerContent").style.display = "none";
+});
+
+// Admin login
+function adminLogin() {
+  const email = document.getElementById("adminEmail").value;
+  const pass = document.getElementById("adminPass").value;
+  auth.signInWithEmailAndPassword(email, pass)
+  .then(() => {
+      alert("Login successful!");
+      document.getElementById("loginContent").style.display = "none";
+      document.getElementById("addPlayerContent").style.display = "block";
+  })
+  .catch(err => alert("Login failed: "+err.message));
+}
+
+// Add player
+function addPlayer() {
+  const name = document.getElementById("playerName").value;
+  const npot = document.getElementById("playerNpot").value;
+  const sword = document.getElementById("playerSword").value;
+  const crystal = document.getElementById("playerCrystal").value;
+  const smp = document.getElementById("playerSmp").value;
+  const mace = document.getElementById("playerMace").value;
+
+  if(!name) return alert("Enter player name!");
+
+  db.collection("players").add({name,npot,sword,crystal,smp,mace})
+  .then(() => {
+    document.getElementById("playerName").value="";
+    document.getElementById("playerNpot").value="";
+    document.getElementById("playerSword").value="";
+    document.getElementById("playerCrystal").value="";
+    document.getElementById("playerSmp").value="";
+    document.getElementById("playerMace").value="";
+  });
+}
+
+// Display live players
+db.collection("players").orderBy("name").onSnapshot(snapshot=>{
+  const table = document.getElementById("rankingTable");
+  table.innerHTML = `<tr>
+      <th>No.</th><th>Player</th><th>NPot</th><th>Sword</th><th>Crystal</th><th>SMP</th><th>Mace</th>
+  </tr>`;
+  let i=1;
+  snapshot.forEach(doc=>{
+      const data = doc.data();
+      const row = table.insertRow(-1);
+      row.insertCell(0).innerText=i++;
+      row.insertCell(1).innerText=data.name;
+      row.insertCell(2).innerText=data.npot;
+      row.insertCell(3).innerText=data.sword;
+      row.insertCell(4).innerText=data.crystal;
+      row.insertCell(5).innerText=data.smp;
+      row.insertCell(6).innerText=data.mace;
+  });
+});
+
+// Close modal
+function closeModal(){
+  document.getElementById("adminModal").style.display = "none";
+}
+
+// Gamemode button highlight
+const buttons = document.querySelectorAll('.gamemode-btn');
+buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    });
+});
+</script>
 </body>
 </html>
