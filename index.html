@@ -19,7 +19,6 @@
       position: relative;
     }
 
-    /* animated background canvas */
     #bg-canvas {
       position: fixed;
       top: 0;
@@ -50,15 +49,6 @@
       z-index: 2;
     }
 
-    /* squircle helper (everything rounded but modern) */
-    .squircle {
-      border-radius: 32px;
-    }
-    .squircle-sm {
-      border-radius: 24px;
-    }
-
-    /* navbar - glass squircle */
     .navbar {
       position: sticky;
       top: 16px;
@@ -142,14 +132,12 @@
       transform: scale(0.98);
     }
 
-    /* player cards grid / stacked */
     .player-cards-container {
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
     }
 
-    /* premium squircle card */
     .player-card {
       background: rgba(14, 14, 28, 0.65);
       backdrop-filter: blur(16px);
@@ -169,22 +157,20 @@
       box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.6);
     }
 
-    /* TOP 3 special cards */
     .player-card.top-1 {
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.22), rgba(100, 70, 20, 0.4));
-      border: 1px solid #f5b042;
-      box-shadow: 0 0 28px rgba(212, 175, 55, 0.55);
-      transform: scale(1.01);
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.25), rgba(100, 70, 20, 0.45));
+      border: 2px solid #f5b042;
+      box-shadow: 0 0 35px rgba(212, 175, 55, 0.6);
     }
     .player-card.top-2 {
-      background: linear-gradient(135deg, rgba(180, 180, 210, 0.2), rgba(100, 100, 140, 0.35));
-      border: 1px solid #c0c0d8;
-      box-shadow: 0 0 24px rgba(192, 192, 216, 0.45);
+      background: linear-gradient(135deg, rgba(180, 180, 210, 0.22), rgba(100, 100, 140, 0.4));
+      border: 2px solid #c0c0d8;
+      box-shadow: 0 0 28px rgba(192, 192, 216, 0.5);
     }
     .player-card.top-3 {
-      background: linear-gradient(135deg, rgba(205, 150, 80, 0.2), rgba(120, 80, 40, 0.35));
-      border: 1px solid #cd7a32;
-      box-shadow: 0 0 22px rgba(205, 122, 50, 0.45);
+      background: linear-gradient(135deg, rgba(205, 150, 80, 0.22), rgba(120, 80, 40, 0.4));
+      border: 2px solid #cd7a32;
+      box-shadow: 0 0 25px rgba(205, 122, 50, 0.5);
     }
 
     @keyframes fadeSlideUp {
@@ -192,42 +178,45 @@
       100% { opacity: 1; transform: translateY(0); }
     }
 
-    /* floating animation for top 3 */
     .floating {
       animation: floatAnim 3.2s ease-in-out infinite;
     }
     @keyframes floatAnim {
       0% { transform: translateY(0px); }
-      50% { transform: translateY(-5px); }
+      50% { transform: translateY(-6px); }
       100% { transform: translateY(0px); }
     }
 
-    /* ========== CARD LAYOUT inspired by mctiers ========== */
     .card-row {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 1.2rem;
+      gap: 1.5rem;
     }
 
     .rank-block {
-      min-width: 80px;
+      min-width: 95px;
       text-align: center;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 28px;
+      padding: 0.5rem 0.8rem;
+      backdrop-filter: blur(4px);
     }
     .rank-number {
-      font-size: 2.6rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #fff, #e6b422);
+      font-size: 3rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #ffffff, #e6b422);
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
-      text-shadow: 0 0 10px rgba(230, 180, 34, 0.5);
+      text-shadow: 0 0 15px rgba(230, 180, 34, 0.6);
       line-height: 1;
+      display: inline-block;
     }
 
     .avatar-large {
-      width: 70px;
-      height: 70px;
+      width: 75px;
+      height: 75px;
       border-radius: 50%;
       object-fit: cover;
       border: 3px solid #d4af37;
@@ -241,36 +230,37 @@
 
     .player-info {
       flex: 2;
-      min-width: 170px;
+      min-width: 200px;
     }
     .player-name {
-      font-size: 1.6rem;
+      font-size: 1.7rem;
       font-weight: 700;
       letter-spacing: -0.3px;
       background: linear-gradient(135deg, #ffffff, #e0e0ff);
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
+      margin-bottom: 6px;
     }
     .player-sub {
       display: flex;
       gap: 1rem;
       align-items: baseline;
       flex-wrap: wrap;
-      margin-top: 6px;
+      margin-top: 4px;
     }
     .category-text {
       font-size: 0.8rem;
       color: #aaaad4;
       background: rgba(255,255,255,0.05);
-      padding: 0.2rem 0.8rem;
+      padding: 0.25rem 0.9rem;
       border-radius: 40px;
       display: inline-block;
     }
     .region-badge {
-      background: rgba(138, 43, 226, 0.3);
+      background: rgba(138, 43, 226, 0.35);
       border-radius: 40px;
-      padding: 0.2rem 1rem;
+      padding: 0.25rem 1.1rem;
       font-size: 0.75rem;
       font-weight: 600;
       color: #cdcdff;
@@ -278,48 +268,47 @@
       backdrop-filter: blur(4px);
     }
 
-    /* tiers section below (centered mini-card) */
     .tier-section {
-      margin-top: 1.4rem;
+      margin-top: 1.5rem;
       display: flex;
       justify-content: center;
     }
     .tier-mini-card {
-      background: rgba(8, 8, 20, 0.7);
+      background: rgba(8, 8, 20, 0.75);
       backdrop-filter: blur(12px);
       border-radius: 32px;
-      padding: 0.8rem 2rem;
+      padding: 0.9rem 2.2rem;
       text-align: center;
       width: 100%;
-      max-width: 260px;
+      max-width: 280px;
       border: 1px solid rgba(212, 175, 55, 0.3);
       transition: all 0.2s;
     }
     .tier-label {
-      font-size: 0.65rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 2.5px;
       color: #aaaacf;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.3rem;
+      font-weight: 600;
     }
     .tier-rank-value {
-      font-size: 2.3rem;
+      font-size: 2.5rem;
       font-weight: 900;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
     }
 
-    /* tier glow variants */
-    .tier-Splus .tier-rank-value { color: #f5b042; text-shadow: 0 0 20px #f5b042; }
-    .tier-S .tier-rank-value { color: #f39c12; text-shadow: 0 0 16px #f39c12; }
-    .tier-A .tier-rank-value { color: #4caf50; text-shadow: 0 0 12px #4caf50; }
-    .tier-B .tier-rank-value { color: #42a5f5; text-shadow: 0 0 10px #42a5f5; }
-    .tier-C .tier-rank-value { color: #9e9e9e; text-shadow: 0 0 8px #9e9e9e; }
+    .tier-Splus .tier-rank-value { color: #f5b042; text-shadow: 0 0 22px #f5b042; }
+    .tier-S .tier-rank-value { color: #f39c12; text-shadow: 0 0 18px #f39c12; }
+    .tier-A .tier-rank-value { color: #4caf50; text-shadow: 0 0 14px #4caf50; }
+    .tier-B .tier-rank-value { color: #42a5f5; text-shadow: 0 0 12px #42a5f5; }
+    .tier-C .tier-rank-value { color: #9e9e9e; text-shadow: 0 0 10px #9e9e9e; }
 
-    .tier-mini-card.tier-Splus { border-color: #f5b042; box-shadow: 0 0 18px rgba(245,176,66,0.4); }
-    .tier-mini-card.tier-S { border-color: #f39c12; box-shadow: 0 0 14px rgba(243,156,18,0.35); }
-    .tier-mini-card.tier-A { border-color: #4caf50; box-shadow: 0 0 12px rgba(76,175,80,0.3); }
-    .tier-mini-card.tier-B { border-color: #42a5f5; box-shadow: 0 0 10px rgba(66,165,245,0.3); }
-    .tier-mini-card.tier-C { border-color: #9e9e9e; box-shadow: 0 0 8px rgba(158,158,158,0.2); }
+    .tier-mini-card.tier-Splus { border-color: #f5b042; box-shadow: 0 0 20px rgba(245,176,66,0.45); }
+    .tier-mini-card.tier-S { border-color: #f39c12; box-shadow: 0 0 16px rgba(243,156,18,0.4); }
+    .tier-mini-card.tier-A { border-color: #4caf50; box-shadow: 0 0 14px rgba(76,175,80,0.35); }
+    .tier-mini-card.tier-B { border-color: #42a5f5; box-shadow: 0 0 12px rgba(66,165,245,0.35); }
+    .tier-mini-card.tier-C { border-color: #9e9e9e; box-shadow: 0 0 10px rgba(158,158,158,0.25); }
 
     .no-results {
       text-align: center;
@@ -330,23 +319,24 @@
       font-size: 1.1rem;
     }
 
-    /* responsive */
     @media (max-width: 780px) {
       .main-wrapper { padding: 0.8rem 1rem 2rem; }
-      .card-row { flex-direction: column; text-align: center; }
-      .rank-block { margin-bottom: 0.2rem; }
+      .card-row { flex-direction: column; text-align: center; gap: 1rem; }
+      .rank-block { min-width: 70px; }
+      .rank-number { font-size: 2.5rem; }
       .player-info { text-align: center; }
       .player-sub { justify-content: center; }
-      .avatar-large { width: 60px; height: 60px; }
-      .player-name { font-size: 1.3rem; }
-      .tier-mini-card { max-width: 220px; padding: 0.6rem 1rem; }
-      .tier-rank-value { font-size: 1.8rem; }
+      .avatar-large { width: 65px; height: 65px; }
+      .player-name { font-size: 1.4rem; }
+      .tier-mini-card { max-width: 240px; padding: 0.7rem 1.5rem; }
+      .tier-rank-value { font-size: 2rem; }
       .navbar { flex-direction: column; align-items: stretch; text-align: center; border-radius: 36px; }
       .controls { justify-content: center; }
       .player-card { padding: 1.2rem; }
     }
     @media (max-width: 480px) {
-      .rank-number { font-size: 2rem; }
+      .rank-number { font-size: 2.2rem; }
+      .rank-block { min-width: 60px; padding: 0.3rem 0.5rem; }
     }
 
     footer {
@@ -390,22 +380,20 @@
 </div>
 
 <script>
-  // ----- avatar generator (squircle avatars via dicebear)
   function getAvatarUrl(username) {
     return `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(username)}&backgroundColor=2c2c3a&radius=50&fontSize=36&fontWeight=600&colors=gold,purple,orange&size=80`;
   }
 
-  // ----- generate 28+ premium players with MCTiers style categories
   const namePool = [
     "ItzRealMe", "coldified", "Swight", "janekv", "BlvckWlf", "Kylaz", "ninorc15", "Lurrn",
     "Arsakha", "yMiau", "CreqmXD", "FrostBlade", "ShadowReap", "VoidWalker", "StormSage",
     "RavenLock", "ZenithX", "MirageOP", "PhantomKite", "EmberFury", "TitanSlayer", "NovaRift",
     "Zephyr_", "LunarHaze", "AshenOne", "DuskBringer", "Sylphie", "Kurogane", "YukiDesu",
-    "Raijin_", "SenpaiPvP", "Rekkles", "ScoutZero", "Matsuri"
+    "Raijin_", "SenpaiPvP", "Rekkles", "ScoutZero", "Matsuri", "OrochiX", "Tempest"
   ];
   
   let players = [];
-  for (let i = 1; i <= 34; i++) {
+  for (let i = 1; i <= 38; i++) {
     let username;
     if (i <= namePool.length) username = namePool[i-1];
     else username = `Elite${i}`;
@@ -413,23 +401,23 @@
     if (i === 1) tier = "S+";
     else if (i === 2) tier = "S+";
     else if (i === 3) tier = "S+";
-    else if (i <= 8) tier = "S";
-    else if (i <= 15) tier = "A";
-    else if (i <= 23) tier = "B";
+    else if (i <= 9) tier = "S";
+    else if (i <= 17) tier = "A";
+    else if (i <= 26) tier = "B";
     else tier = "C";
+    
     if (username === "Rekkles") tier = "S+";
     if (username === "ScoutZero") tier = "S+";
     if (username === "MirageOP") tier = "A";
     if (username === "Kurogane") tier = "B";
     
-    // points and category like mctiers
     let points = 0;
     let categoryTitle = "Combat Master";
-    if (tier === "S+") points = Math.floor(Math.random() * (380 - 290) + 290);
-    else if (tier === "S") points = Math.floor(Math.random() * (280 - 210) + 210);
-    else if (tier === "A") points = Math.floor(Math.random() * (200 - 150) + 150);
-    else if (tier === "B") points = Math.floor(Math.random() * (140 - 90) + 90);
-    else points = Math.floor(Math.random() * (80 - 30) + 30);
+    if (tier === "S+") points = Math.floor(Math.random() * (400 - 310) + 310);
+    else if (tier === "S") points = Math.floor(Math.random() * (300 - 230) + 230);
+    else if (tier === "A") points = Math.floor(Math.random() * (220 - 160) + 160);
+    else if (tier === "B") points = Math.floor(Math.random() * (150 - 95) + 95);
+    else points = Math.floor(Math.random() * (85 - 35) + 35);
     
     if (tier === "S+") categoryTitle = "Elite Grandmaster";
     else if (tier === "S") categoryTitle = "Combat Master";
@@ -449,13 +437,10 @@
       avatarUrl: getAvatarUrl(username)
     });
   }
-  // extra players to reach ~38
-  players.push({ rank: 35, username: "GodlyRift", tier: "S+", category: "Elite Grandmaster (410 pts)", region: "NA", avatarUrl: getAvatarUrl("GodlyRift") });
-  players.push({ rank: 36, username: "OmegaFlash", tier: "S", category: "Combat Master (298 pts)", region: "EU", avatarUrl: getAvatarUrl("OmegaFlash") });
-  players.push({ rank: 37, username: "CrimsonFang", tier: "A", category: "Combat Ace (189 pts)", region: "ASIA", avatarUrl: getAvatarUrl("CrimsonFang") });
-  players.push({ rank: 38, username: "LethalMist", tier: "B", category: "Combat Veteran (112 pts)", region: "OCE", avatarUrl: getAvatarUrl("LethalMist") });
   
-  // sort and reassign rank order
+  players.push({ rank: 39, username: "GodlyRift", tier: "S+", category: "Elite Grandmaster (425 pts)", region: "NA", avatarUrl: getAvatarUrl("GodlyRift") });
+  players.push({ rank: 40, username: "OmegaFlash", tier: "S", category: "Combat Master (312 pts)", region: "EU", avatarUrl: getAvatarUrl("OmegaFlash") });
+  
   players.sort((a,b) => a.rank - b.rank);
   players.forEach((p, idx) => { p.rank = idx + 1; });
   
@@ -522,7 +507,7 @@
         <div class="player-card ${cardTopClass} ${floatingClass}" style="animation-delay: ${animationDelay}s;">
           <div class="card-row">
             <div class="rank-block">
-              <div class="rank-number">${rank}.</div>
+              <div class="rank-number">${rank}</div>
             </div>
             <img class="avatar-large" src="${player.avatarUrl}" alt="avatar" loading="lazy" onerror="this.src='https://api.dicebear.com/9.x/identicon/svg?seed=${player.username}'">
             <div class="player-info">
@@ -557,7 +542,6 @@
     setTimeout(() => sortBtn.style.transform = "", 150);
   });
   
-  // ---------- ANIMATED BACKGROUND (particles + stars) ----------
   const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
   let width, height;
